@@ -1,0 +1,20 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.tmp/
+.verification/
+out/
+ensp-out/
+
+# Do not commit virtual-machine or eNSP device binary images.
+*.vdi
+*.vmdk
+*.vhd
+*.vhdx
+*.efz
+
+# Common editor and OS files.
+.vscode/
+.idea/
+Thumbs.db
+Desktop.ini
