@@ -2,7 +2,7 @@
 
 一个只依赖 Python 标准库的 eNSP `.topo` 解析工具：把实验拓扑转换为设备清单、接口连线表和 Mermaid 图，减少手工整理文档的工作。
 
-仓库同时提供一份可亲手完成的[双部门静态路由实验](docs/LAB_GUIDE.md)。程序负责整理拓扑，网络配置与连通性验证仍在 eNSP 中完成。
+仓库同时提供可亲手完成的 eNSP 实验：中级企业园区网综合实验和双部门静态路由入门实验。程序负责整理拓扑，网络配置与连通性验证仍在 eNSP 中完成。
 
 ## 功能
 
@@ -61,7 +61,13 @@ python scripts/ensp_topology.py --help
 
 示例输入来自本机 eNSP 自带的 `2-1Single-Area OSPF.topo`，**仅用于演示解析器输出，不是本仓库原创的网络实验，也不代表已重新验证 OSPF 连通性**。详见[示例来源说明](examples/builtin-ospf/SOURCE.md)。
 
-自己的实验请按[实验指南](docs/LAB_GUIDE.md)搭建、配置、测试并记录真实结果。
+自己的实验请按任务书或指南搭建、配置、测试并记录真实结果。
+
+## 实验任务书
+
+- **中级综合实验**：[中小型企业园区网综合实验任务书](docs/eNSP企业园区网综合实验任务书.docx)，包含双核心、MSTP、VRRP、OSPF、DHCP Relay、ACL 和冗余切换验证。
+- **入门实验**：[双部门静态路由实验指南](docs/LAB_GUIDE.md)与[实验任务书](docs/eNSP双部门静态路由实验任务书.docx)，用于熟悉基础 VLAN 和静态路由。
+- [查看企业园区网高清拓扑图](docs/images/enterprise-campus-topology.png)。图中是设计要求，具体 MSTP 阻塞端口、VRRP 主备和 OSPF 路径以真实设备输出为准。
 
 ## 运行测试
 
@@ -89,7 +95,10 @@ ensp-topology-toolkit/
 ├─ examples/
 │  └─ builtin-ospf/         # 已注明来源的输出示例
 ├─ docs/
-│  └─ LAB_GUIDE.md          # 可亲手完成的 eNSP 实验
+│  ├─ LAB_GUIDE.md                      # 双部门静态路由入门指南
+│  ├─ eNSP双部门静态路由实验任务书.docx   # 入门任务书
+│  ├─ eNSP企业园区网综合实验任务书.docx     # 中级综合任务书
+│  └─ images/enterprise-campus-topology.png
 └─ .github/workflows/
    └─ tests.yml             # GitHub Actions 自动测试
 ```
