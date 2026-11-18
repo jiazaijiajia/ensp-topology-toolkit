@@ -3,6 +3,7 @@ __pycache__/
 .pytest_cache/
 .tmp/
 .verification/
+.docx-build/
 out/
 ensp-out/
 
