@@ -67,6 +67,7 @@ python scripts/ensp_topology.py --help
 
 - **中级综合实验**：[中小型企业园区网综合实验任务书](docs/eNSP企业园区网综合实验任务书.docx)，包含双核心、MSTP、VRRP、OSPF、DHCP Relay、ACL 和冗余切换验证。
 - **入门实验**：[双部门静态路由实验指南](docs/LAB_GUIDE.md)与[实验任务书](docs/eNSP双部门静态路由实验任务书.docx)，用于熟悉基础 VLAN 和静态路由。
+- **设备配置**：[企业园区网逐台设备配置](docs/enterprise-campus-device-configs.md)，按截图设备名给出 AR1、AR2、LSW1～LSW5 的完整命令。
 - [查看企业园区网高清拓扑图](docs/images/enterprise-campus-topology.png)。图中是设计要求，具体 MSTP 阻塞端口、VRRP 主备和 OSPF 路径以真实设备输出为准。
 
 ## 运行测试
@@ -98,6 +99,7 @@ ensp-topology-toolkit/
 │  ├─ LAB_GUIDE.md                      # 双部门静态路由入门指南
 │  ├─ eNSP双部门静态路由实验任务书.docx   # 入门任务书
 │  ├─ eNSP企业园区网综合实验任务书.docx     # 中级综合任务书
+│  ├─ enterprise-campus-device-configs.md # 中级实验逐台设备配置
 │  └─ images/enterprise-campus-topology.png
 └─ .github/workflows/
    └─ tests.yml             # GitHub Actions 自动测试
