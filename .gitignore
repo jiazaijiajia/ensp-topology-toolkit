@@ -19,3 +19,6 @@ ensp-out/
 .idea/
 Thumbs.db
 Desktop.ini
+
+# Microsoft Word temporary lock files.
+~$*
