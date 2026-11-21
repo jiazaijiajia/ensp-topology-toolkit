@@ -56,20 +56,15 @@ python scripts/ensp_topology.py "D:\ensp-lab\campus\campus.topo"
 python scripts/ensp_topology.py --help
 ```
 
-## 示例
-
-[查看解析报告](examples/builtin-ospf/topology.md) · [查看 Mermaid 源码](examples/builtin-ospf/diagram.mmd)
-
-示例输入来自本机 eNSP 自带的 `2-1Single-Area OSPF.topo`，**仅用于演示解析器输出，不是本仓库原创的网络实验，也不代表已重新验证 OSPF 连通性**。详见[示例来源说明](examples/builtin-ospf/SOURCE.md)。
-
-自己的实验请按任务书或指南搭建、配置、测试并记录真实结果。
-
 ## 本人的实验工程
 
 [中小型企业园区网实验](labs/enterprise-campus/README.md) 是按任务书实际搭建并保存的工程：
 包含 `.topo`、七台设备的已保存配置、解析后的设备与连线清单，以及
 [已完成的验证记录](labs/enterprise-campus/README.md#已经验证的内容)和
 [尚未验证的验收项](labs/enterprise-campus/README.md#还没有验证的内容)。
+
+这个工程同时也是解析器的输出示例：[topology.md](labs/enterprise-campus/topology.md) 是设备与连线清单，
+[diagram.mmd](labs/enterprise-campus/diagram.mmd) 是 Mermaid 图源。
 
 ## 实验任务书
 
@@ -100,8 +95,6 @@ ensp-topology-toolkit/
 │  └─ run-parse.bat         # Windows 拖放启动器
 ├─ tests/
 │  └─ test_topology.py      # 标准库 unittest 测试
-├─ examples/
-│  └─ builtin-ospf/         # 已注明来源的输出示例
 ├─ labs/
 │  └─ enterprise-campus/    # 本人实做的企业园区网工程
 │     ├─ enterprise-campus.topo  # 拓扑文件
