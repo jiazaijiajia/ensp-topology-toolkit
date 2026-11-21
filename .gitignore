@@ -22,3 +22,6 @@ Desktop.ini
 
 # Microsoft Word temporary lock files.
 ~$*
+
+# Task book kept locally only; not published.
+docs/eNSP双部门静态路由实验任务书.docx
