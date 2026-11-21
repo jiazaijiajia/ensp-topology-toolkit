@@ -2,7 +2,7 @@
 
 一个只依赖 Python 标准库的 eNSP `.topo` 解析工具：把实验拓扑转换为设备清单、接口连线表和 Mermaid 图，减少手工整理文档的工作。
 
-仓库同时提供可亲手完成的 eNSP 实验：中级企业园区网综合实验和双部门静态路由入门实验。程序负责整理拓扑，网络配置与连通性验证仍在 eNSP 中完成。
+仓库同时提供一个可亲手完成的 eNSP 实验：中级企业园区网综合实验。程序负责整理拓扑，网络配置与连通性验证仍在 eNSP 中完成。
 
 ## 功能
 
@@ -74,7 +74,6 @@ python scripts/ensp_topology.py --help
 ## 实验任务书
 
 - **中级综合实验**：[中小型企业园区网综合实验任务书](docs/eNSP企业园区网综合实验任务书.docx)，包含双核心、MSTP、VRRP、OSPF、DHCP Relay、ACL 和冗余切换验证。
-- **入门实验**：[双部门静态路由实验指南](docs/LAB_GUIDE.md)，用于熟悉基础 VLAN 和静态路由。
 - **设备配置**：[企业园区网逐台设备配置](docs/enterprise-campus-device-configs.md)，按截图设备名给出 AR1、AR2、LSW1～LSW5 的完整命令，并逐条说明每条命令的作用。
 - [查看企业园区网高清拓扑图](docs/images/enterprise-campus-topology.png)。图中是设计要求，具体 MSTP 阻塞端口、VRRP 主备和 OSPF 路径以真实设备输出为准。
 
@@ -110,7 +109,6 @@ ensp-topology-toolkit/
 │     ├─ topology.md             # 解析得到的设备与连线清单
 │     └─ diagram.mmd             # Mermaid 源码
 ├─ docs/
-│  ├─ LAB_GUIDE.md                      # 双部门静态路由入门指南
 │  ├─ eNSP企业园区网综合实验任务书.docx     # 中级综合任务书
 │  ├─ enterprise-campus-device-configs.md # 中级实验逐台设备配置
 │  └─ images/enterprise-campus-topology.png
