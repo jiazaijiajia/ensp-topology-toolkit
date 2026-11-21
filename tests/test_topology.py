@@ -75,10 +75,45 @@ class TopologyParsingTests(unittest.TestCase):
         self.assertEqual(devices[0]["interfaces"][2], "GE0/0/0")
         self.assertEqual(devices[0]["interfaces"][3], "GE0/0/1")
 
+    def test_switch_ports_start_at_one(self):
+        xml = """<topo><devices>
+          <dev id="A" name="LSW1" model="S3700">
+            <slot number="slot17" isMainBoard="1">
+              <interface sztype="Ethernet" interfacename="Ethernet" count="22" />
+              <interface sztype="Ethernet" interfacename="GE" count="2" />
+            </slot>
+          </dev>
+        </devices></topo>"""
+        devices, _ = ensp.parse_topology(ensp.ET.fromstring(xml))
+        interfaces = devices[0]["interfaces"]
+        self.assertEqual(interfaces[0], "Ethernet0/0/1")
+        self.assertEqual(interfaces[9], "Ethernet0/0/10")
+        self.assertEqual(interfaces[21], "Ethernet0/0/22")
+        self.assertEqual(interfaces[22], "GE0/0/1")
+        self.assertEqual(interfaces[23], "GE0/0/2")
+
+    def test_expansion_card_port_takes_card_slot(self):
+        xml = """<topo><devices>
+          <dev id="A" name="AR1" model="AR1220">
+            <slot number="slot17" isMainBoard="1">
+              <interface sztype="Ethernet" interfacename="GE" count="2" />
+              <interface sztype="Ethernet" interfacename="Ethernet" count="8" />
+              <interface sztype="Ethernet" interfacename="GE" count="1" />
+            </slot>
+            <slot isMainBoard="0" id="1" type="6" />
+          </dev>
+        </devices></topo>"""
+        devices, _ = ensp.parse_topology(ensp.ET.fromstring(xml))
+        interfaces = devices[0]["interfaces"]
+        self.assertEqual(interfaces[0], "GE0/0/0")
+        self.assertEqual(interfaces[1], "GE0/0/1")
+        self.assertEqual(interfaces[2], "Ethernet0/0/0")
+        self.assertEqual(interfaces[10], "GE2/0/0")
+
     def test_maps_absolute_link_indexes(self):
         _, links = parse_sample()
         self.assertEqual(links[0]["src_port"], "GE0/0/0")
-        self.assertEqual(links[0]["dst_port"], "GE0/0/1")
+        self.assertEqual(links[0]["dst_port"], "GE0/0/2")
         self.assertFalse(links[0]["broken"])
 
     def test_natural_device_sorting(self):

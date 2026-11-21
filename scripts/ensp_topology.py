@@ -27,19 +27,55 @@ def read_topo(path: Path) -> ET.Element:
     return ET.fromstring(text)
 
 
+# eNSP numbers switch ports from 1 but router and end-device ports from 0.
+# Expansion card ports are appended to the main board's interface list and
+# take the card slot number, so the groups a main board owns must be known to
+# tell a card port apart from a fixed one.
+MAINBOARD_GROUPS = {"AR1220": (("GE", 2), ("Ethernet", 8))}
+
+
+def first_port_number(model: str) -> int:
+    """Return 1 for switch families such as S3700 and 0 for everything else."""
+    return 1 if re.match(r"^S\d", model) else 0
+
+
+def group_prefixes(dev: ET.Element, groups, model: str) -> list[str]:
+    """Return the slot prefix ("0/0", "2/0") for each interface group."""
+    layout = MAINBOARD_GROUPS.get(model)
+    mainboard = len(layout) if layout else len(groups)
+    prefixes = ["0/0"] * min(mainboard, len(groups))
+    extra = groups[len(prefixes):]
+    slots = sorted(
+        int(slot.get("id", "0")) + 1
+        for slot in dev.findall("slot")
+        if slot.get("isMainBoard") == "0"
+    )
+    if len(extra) != len(slots):
+        # Unknown card layout: keep the ports visible without inventing a slot.
+        return prefixes + ["?/0"] * len(extra)
+    return prefixes + [f"{slot}/0" for slot in slots]
+
+
 def build_interface_map(dev: ET.Element) -> dict[int, str]:
-    """Map eNSP's absolute interface indexes to names such as GE0/0/0."""
-    result = {}
-    absolute = 0
+    """Map eNSP's absolute interface indexes to names such as GE0/0/1 or GE2/0/0."""
+    model = dev.get("model", "")
+    groups = []
     for slot in dev.findall("slot"):
         for interface in slot.findall("interface"):
-            name = interface.get("interfacename", "?")
             count = int(interface.get("count", "0"))
             if count < 0:
                 raise ValueError("interface count cannot be negative")
-            for offset in range(count):
-                result[absolute] = f"{name}0/0/{offset}"
-                absolute += 1
+            groups.append((interface.get("interfacename", "?"), count))
+
+    base = first_port_number(model)
+    prefixes = group_prefixes(dev, groups, model)
+
+    result = {}
+    absolute = 0
+    for (name, count), prefix in zip(groups, prefixes):
+        for offset in range(count):
+            result[absolute] = f"{name}{prefix}/{offset + base}"
+            absolute += 1
     return result
 
 
