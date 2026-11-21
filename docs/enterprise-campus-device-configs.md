@@ -14,15 +14,20 @@
 
 ## 设备映射
 
-| 任务书 | 截图 | 型号 | 角色 |
-|---|---|---|---|
-| R1 | AR1 | AR1220 | 总部出口、DHCP 服务器 |
-| R2 | AR2 | AR1220 | 分支出口、DHCP 服务器 |
-| CSW1 | LSW3 | S5700 | MSTI1 根、VLAN10/30 主网关 |
-| CSW2 | LSW4 | S5700 | MSTI2 根、VLAN20/50 主网关 |
-| ASW1 | LSW1 | S5700 | 行政、研发接入 |
-| ASW2 | LSW2 | S5700 | 财务、服务器接入 |
-| BSW1 | LSW5 | S5700 | 分支接入 |
+| 设备 | 型号 | 角色 |
+|---|---|---|
+| AR1 | AR1220 | 总部出口、DHCP 服务器 |
+| AR2 | AR1220 | 分支出口、DHCP 服务器 |
+| LSW3 | S5700 | MSTI1 根、VLAN10/30 主网关 |
+| LSW4 | S5700 | MSTI2 根、VLAN20/50 主网关 |
+| LSW1 | S3700 | 行政、研发接入 |
+| LSW2 | S3700 | 财务、服务器接入 |
+| LSW5 | S3700 | 分支接入 |
+
+> 注意：本文件的命令按 **S5700** 的接口写法（GigabitEthernet 0/0/x）。
+> 本人工程的接入交换机是 **S3700**，接口就是 Ethernet 0/0/x（如 Eth0/0/10），
+> 上联口也不在 24 号。实际端口对照见「十四」节，
+> 以及 labs/enterprise-campus/configs/ 里从工程导出的配置。
 
 ---
 
@@ -30,7 +35,7 @@
 
 以下 6 条直接决定实验能否跑通，请先读完再粘贴配置。
 
-1. **LSW5 的 `GE0/0/24` 必须是 access VLAN 40。**
+1. **LSW5 上联 AR2 的那个口必须是 access VLAN 40。**
    AR2 的 `GE0/0/1` 是普通三层物理接口，不是 dot1q 子接口，所以这里不能配 trunk。
 
 2. **LSW1、LSW2、LSW3、LSW4 必须配置完全相同的 MST 域。**
@@ -251,7 +256,7 @@ interface GigabitEthernet 0/0/24
 | `port default vlan 40` | 划入 VLAN 40 |
 
 > 说明：AR2 的 `GE0/0/1` 是普通三层物理接口，不是 dot1q 子接口，
-> 所以 LSW5 的 `GE0/0/24` 必须是 **access VLAN 40**，不能配 trunk。
+> 所以 LSW5 上联 AR2 的那个口必须是 **access VLAN 40**，不能配 trunk。
 
 ---
 
@@ -834,7 +839,7 @@ display traffic-filter applied-record
 - LSW3 的 MSTI1 为根，LSW4 的 MSTI2 为根。
 - VLAN10/30 的 VRRP Master 是 LSW3，VLAN20/50 的 VRRP Master 是 LSW4。
 - 四个业务虚拟网关 `.1` 可以 ping 通。
-- OSPF 邻居数量符合：AR1 有 CSW1、CSW2、R2；CSW1、CSW2 互为邻居；AR2 只有 R1。
+- OSPF 邻居数量符合：AR1 有 LSW3、LSW4、AR2；LSW3、LSW4 互为邻居；AR2 只有 AR1。
 - 路由表包含四个总部业务网段和 `192.168.40.0/24`。
 - PC1、PC2、PC3、PC4 获得对应网段地址。
 
@@ -863,14 +868,14 @@ vrrp vrid 10 preempt-mode timer delay 20
 #### 11.2.1 配置命令
 
 ```text
-vrrp vrid 10 track interface GigabitEthernet 0/0/24 reduced 30
+vrrp vrid 10 track interface GigabitEthernet 0/0/3 reduced 30
 ```
 
 #### 11.2.2 命令说明
 
 | 命令 | 作用 |
 |---|---|
-| `vrrp vrid 10 track interface GigabitEthernet 0/0/24 reduced 30` | 跟踪 GE0/0/24 接口，接口故障时优先级降低 30，从 120 降到 90，低于备份侧的 100 |
+| `vrrp vrid 10 track interface GigabitEthernet 0/0/3 reduced 30` | 跟踪 LSW3 连 AR1 的 GE0/0/3，该接口故障时优先级降低 30，从 120 降到 90，低于备份侧的 100 |
 
 > 说明：120 降至 90 后低于备份侧 100。此功能不是所有场景都必须，因为流量仍可能经另一核心绕达 AR1。
 
