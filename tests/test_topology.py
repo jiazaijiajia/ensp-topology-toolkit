@@ -110,6 +110,17 @@ class TopologyParsingTests(unittest.TestCase):
         self.assertEqual(interfaces[2], "Ethernet0/0/0")
         self.assertEqual(interfaces[10], "GE2/0/0")
 
+    def test_end_device_ports_start_at_one(self):
+        xml = """<topo><devices>
+          <dev id="A" name="PC1" model="PC">
+            <slot number="slot17" isMainBoard="1">
+              <interface sztype="Ethernet" interfacename="Ethernet" count="1" />
+            </slot>
+          </dev>
+        </devices></topo>"""
+        devices, _ = ensp.parse_topology(ensp.ET.fromstring(xml))
+        self.assertEqual(devices[0]["interfaces"][0], "Ethernet0/0/1")
+
     def test_maps_absolute_link_indexes(self):
         _, links = parse_sample()
         self.assertEqual(links[0]["src_port"], "GE0/0/0")

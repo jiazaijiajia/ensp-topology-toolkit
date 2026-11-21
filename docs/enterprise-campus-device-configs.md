@@ -996,6 +996,7 @@ dhcp relay server-ip 1.1.1.1
 编号规律：
 
 - 交换机端口从 1 开始，`Ethernet 0/0/1` 是第一个百兆口，`GigabitEthernet 0/0/1` 是第一个千兆口。
+- 终端（PC、Server）只有一个以太网口，接口名是 `Ethernet 0/0/1`。
 - 路由器端口从 0 开始，`GigabitEthernet 0/0/0` 是第一个千兆口。
 - 扩展卡端口带槽位号：AR1220 的单口 GE 卡插在 2 号槽，接口就是 `GigabitEthernet 2/0/0`。
 

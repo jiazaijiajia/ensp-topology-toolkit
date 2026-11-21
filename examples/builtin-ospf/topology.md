@@ -16,9 +16,9 @@
 
 | 源设备 | 源接口 | 目的设备 | 目的接口 | 链路类型 |
 |---|---|---|---|---|
-| R2 | GE0/0/0 | CLOUD1 | Ethernet0/0/2 | Copper |
-| R1 | GE0/0/0 | CLOUD1 | Ethernet0/0/0 | Copper |
-| CLOUD1 | Ethernet0/0/1 | R3 | GE0/0/0 | Copper |
+| R2 | GE0/0/0 | CLOUD1 | Ethernet0/0/3 | Copper |
+| R1 | GE0/0/0 | CLOUD1 | Ethernet0/0/1 | Copper |
+| CLOUD1 | Ethernet0/0/2 | R3 | GE0/0/0 | Copper |
 
 ## 拓扑示意
 
@@ -30,5 +30,5 @@ graph LR
     D3["R3<br/>AR1220"]
     D2 ---|GE0/0/0| D0
     D1 ---|GE0/0/0| D0
-    D0 ---|Ethernet0/0/1| D3
+    D0 ---|Ethernet0/0/2| D3
 ```

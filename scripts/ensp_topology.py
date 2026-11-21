@@ -35,8 +35,12 @@ MAINBOARD_GROUPS = {"AR1220": (("GE", 2), ("Ethernet", 8))}
 
 
 def first_port_number(model: str) -> int:
-    """Return 1 for switch families such as S3700 and 0 for everything else."""
-    return 1 if re.match(r"^S\d", model) else 0
+    """Return 0 for routers and firewalls, 1 for switches and end devices.
+
+    Routers such as AR1220 number GigabitEthernet from 0; switches (S3700,
+    S5700) and end devices (PC, Server, Hub) number their ports from 1.
+    """
+    return 0 if re.match(r"^(AR|USG|NE|SR)\d", model) else 1
 
 
 def group_prefixes(dev: ET.Element, groups, model: str) -> list[str]:

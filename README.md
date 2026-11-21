@@ -8,7 +8,8 @@
 
 - 读取 eNSP 保存的 `.topo` 文件，不要求启动设备。
 - 生成设备名称、型号、Console 端口和接口数量清单。
-- 将内部接口索引转换为真实接口名，生成连线表：交换机端口从 1 编号，路由器从 0 编号，扩展卡端口带槽位号（如 `GE2/0/0`）。
+- 将内部接口索引转换为真实接口名，生成连线表：交换机和终端（PC、Server）的端口从 1 编号，
+  路由器从 0 编号，扩展卡端口带槽位号（如 `GE2/0/0`）。
 - 生成可由 GitHub 显示的 Mermaid 拓扑图。
 - 标记缺失端点、缺失接口信息和无法识别的接口索引，不静默猜测。
 - 支持中文设备名和包含空格的路径。
@@ -63,6 +64,13 @@ python scripts/ensp_topology.py --help
 
 自己的实验请按任务书或指南搭建、配置、测试并记录真实结果。
 
+## 本人的实验工程
+
+[中小型企业园区网实验](labs/enterprise-campus/README.md) 是按任务书实际搭建并保存的工程：
+包含 `.topo`、七台设备的已保存配置、解析后的设备与连线清单，以及
+[已完成的验证记录](labs/enterprise-campus/README.md#已经验证的内容)和
+[尚未验证的验收项](labs/enterprise-campus/README.md#还没有验证的内容)。
+
 ## 实验任务书
 
 - **中级综合实验**：[中小型企业园区网综合实验任务书](docs/eNSP企业园区网综合实验任务书.docx)，包含双核心、MSTP、VRRP、OSPF、DHCP Relay、ACL 和冗余切换验证。
@@ -80,7 +88,7 @@ python -m unittest discover -s tests -v
 
 本次本地验证结果：
 
-- Python 3.14.5：14 项单元测试全部通过。
+- Python 3.14.5：17 项单元测试全部通过。
 - eNSP 自带示例：40/40 解析成功，共读取 212 台设备、211 条链路。
 - `Campus_Network.topo`：43 台设备、76 条链路。
 
@@ -95,6 +103,12 @@ ensp-topology-toolkit/
 │  └─ test_topology.py      # 标准库 unittest 测试
 ├─ examples/
 │  └─ builtin-ospf/         # 已注明来源的输出示例
+├─ labs/
+│  └─ enterprise-campus/    # 本人实做的企业园区网工程
+│     ├─ enterprise-campus.topo  # 拓扑文件
+│     ├─ configs/                # 七台设备的已保存配置
+│     ├─ topology.md             # 解析得到的设备与连线清单
+│     └─ diagram.mmd             # Mermaid 源码
 ├─ docs/
 │  ├─ LAB_GUIDE.md                      # 双部门静态路由入门指南
 │  ├─ eNSP双部门静态路由实验任务书.docx   # 入门任务书
