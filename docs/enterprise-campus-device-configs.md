@@ -978,3 +978,30 @@ dhcp relay server-ip 1.1.1.1
 - 这只能消除对单条物理链路地址的依赖，AR1 本身仍是单点。
 - 双核心同时中继会产生重复中继报文，这是正常现象，
   不要通过删除备份核心中继来"修复"，否则核心故障时 DHCP 会失去冗余。
+
+---
+
+## 十四、接口名随设备型号变化
+
+同一个拓扑位置换成不同型号，接口名就会变。上文代码按 `S5700` 接入交换机写；
+如果接入或分支交换机用 `S3700`，**照抄会报错**，要按下面的对照替换：
+
+| 位置 | S5700（上文代码） | S3700（实际工程） |
+|---|---|---|
+| LSW1 / LSW2 / LSW5 接终端 | `GigabitEthernet 0/0/10`、`0/0/11` | `Ethernet 0/0/10`、`0/0/11` |
+| LSW1 / LSW2 / LSW5 上联核心 | `GigabitEthernet 0/0/1`、`0/0/2` | `Ethernet 0/0/1`、`0/0/2` |
+| 核心 LSW3 / LSW4 | `GigabitEthernet 0/0/1`–`0/0/24` | 相同，S5700 只有千兆口 |
+| AR1—AR2 互联 | `GigabitEthernet 0/0/2` | `GigabitEthernet 2/0/0`，需先 `board add 0/2 1GEC` |
+
+编号规律：
+
+- 交换机端口从 1 开始，`Ethernet 0/0/1` 是第一个百兆口，`GigabitEthernet 0/0/1` 是第一个千兆口。
+- 路由器端口从 0 开始，`GigabitEthernet 0/0/0` 是第一个千兆口。
+- 扩展卡端口带槽位号：AR1220 的单口 GE 卡插在 2 号槽，接口就是 `GigabitEthernet 2/0/0`。
+
+核对办法：在设备上执行 `display interface brief`，或解析自己的 `.topo`，
+连线表里给出的接口名就是设备上真实的名字。
+
+```text
+display interface brief
+```
